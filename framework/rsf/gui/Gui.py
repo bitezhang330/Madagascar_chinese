@@ -114,7 +114,7 @@ class Gui(Tk):
 
         Objects are saved to *.tkm file format (tkmadagascar) format.
         '''
-        formats = [('tkMadagascar object format','*.tkm')]
+        formats = [(u'tkMadagascar 状态文件','*.tkm')]
         # Get a name to save all objects to
         name = tkFileDialog.asksaveasfilename(title=u"保存状态到：",
                                               filetypes=formats)
@@ -146,7 +146,7 @@ class Gui(Tk):
         Valid file suffixes are *.tkm.
         '''
         # Get a file name to load
-        formats = [('tkMadagascar object format','*.tkm')]
+        formats = [(u'tkMadagascar 状态文件','*.tkm')]
         name = tkFileDialog.askopenfilename(title=u"从以下位置加载状态：",
                                             filetypes=formats)
         if len(name) > 0:
@@ -230,21 +230,21 @@ class Gui(Tk):
                 self.after(500,self.waitForProcess )
 
             elif rc == 0:
-                self.log.insert(END,"\nSUCCESSFUL RUN\n")
+                self.log.insert(END,u"\n运行成功\n")
                 self.process = None
 
             elif rc > 0:
-                self.log.insert(END,"\nRUN TERMINATED DUE TO ERRORS\n")
+                self.log.insert(END,u"\n运行因错误而终止\n")
                 self.process = None
             elif rc < 0:
-                self.log.insert(END,"\nRUN KILLED BY SIGNAL %d\n" % rc)
+                self.log.insert(END,u"\n运行被信号 %d 终止\n" % rc)
                 self.process = None
 
     def killProcess(self):
 
         if self.process:
             if self.log:
-                self.log.insert(END,"****\nKILLING PROCESS: %d\n****\n" % self.process.pid)
+                self.log.insert(END,u"****\n正在终止进程：%d\n****\n" % self.process.pid)
 
             rc = self.process.poll()
             if rc == None:

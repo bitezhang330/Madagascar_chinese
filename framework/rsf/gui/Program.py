@@ -35,16 +35,16 @@ class Program():
         '''
         Convert this Program to a self-documentation string.
         '''
-        desc = '\n[NAME]:\n\t%s - %s \n\n' % (self.name,self.desc)
-        snps = '[SYNOPSIS]:\n\t%s \n\n' % self.synopsis
-        cmts = '[COMMENTS]:\n\t%s\n\n' % self.comments
-        pars = '[PARAMETERS]:\n\n'
+        desc = u'\n[名称]:\n\t%s - %s \n\n' % (self.name,self.desc)
+        snps = u'[用法]:\n\t%s \n\n' % self.synopsis
+        cmts = u'[说明]:\n\t%s\n\n' % self.comments
+        pars = u'[参数]:\n\n'
         names = self.pars.keys()
         names.sort()
         for name in names:
             par = self.pars[name]
             pars += '\t'+str(par)+'\n'
-        uses = '\n[USED IN]:\n'
+        uses = u'\n[使用位置]:\n'
         books = self.uses.keys()
         books.sort()
         for book in self.uses.keys():
@@ -53,12 +53,12 @@ class Program():
             for chapter in chapters:
                 for project in self.uses[book][chapter]:
                     uses += '\t%s/%s/%s\n' % (book,chapter,project)
-        source = '\n[SOURCE]:\n\t%s\n' % self.file
+        source = u'\n[源文件]:\n\t%s\n' % self.file
         wiki   = '\n[WIKI]:\n\t%s\n' % self.wiki
         if not self.wiki or self.wiki == '': wiki = ''
-        vers   = '\n[VERSION]:\n\t%s\n' % self.vers
+        vers   = u'\n[版本]:\n\t%s\n' % self.vers
         if not self.vers or self.vers == '': vers = ''
-        also   = '\n[SEE ALSO]:\n\t%s\n' % self.also
+        also   = u'\n[另请参阅]:\n\t%s\n' % self.also
         if not self.also or self.also == '': also = ''
         return desc+snps+cmts+pars+uses+source+wiki+vers+also
         
