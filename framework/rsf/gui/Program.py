@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 plotPrograms = '''box contour contour3 dots graph graph3 grey grey3 plas pldb plotrays thplot vplotdiff wiggle'''
 
 plotCommands = 'Overlay SideBySideIso SideBySideAniso OverUnderAniso OverUnderIso TwoRows TwoColumns Movie'

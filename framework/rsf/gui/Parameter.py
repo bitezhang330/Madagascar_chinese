@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Parameter():
     '''
     A Parameter contains all of the information about a Parameter
@@ -31,15 +32,15 @@ class Parameter():
                 if '=' in tval:
                     tval = tval.split('=')[1]
                 else:
-                    raise Exception("%s must specify which axis to operate on (1-9).  Example: %s=%s" % (self.name, self.name.replace('#','1'),'1'))
+                    raise Exception(u"%s 必须指定要操作的轴（1-9）。示例：%s=%s" % (self.name, self.name.replace('#','1'),'1'))
                 if not self.check(tval):
-                    raise Exception("Bad value for this parameter")
+                    raise Exception(u"该参数值无效")
                 
             self.value = value 
         elif self.check(value):
             self.value = value
         else:
-            raise Exception("%s is not a valid value for this parameter." % value)
+            raise Exception(u"%s 不是该参数的有效值。" % value)
         
     def check(self,value):
         '''

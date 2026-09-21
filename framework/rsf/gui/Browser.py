@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Tkinter import *
 from Flow import Flow
 import Util,tkMessageBox
@@ -30,7 +31,7 @@ class Browser(Frame):
 
         menubar = Menu(self)
 
-        menubar.add_command(label="Search by functionality",command=self.__searchDescriptions)
+        menubar.add_command(label=u"按功能搜索",command=self.__searchDescriptions)
         master.config(menu=menubar)
 
         programFrame = Frame(self,bd=3)
@@ -44,7 +45,7 @@ class Browser(Frame):
         self.programEntry = Entry(searchFrame)
         self.programEntry.bind('<Return>',self.__searchProgramList)
 
-        entryButton = Button(searchFrame,text="Find program")
+        entryButton = Button(searchFrame,text=u"查找程序")
         entryButton.bind('<Button-1>',self.__searchProgramList)
 
         self.programEntry.pack(side=LEFT)
@@ -61,9 +62,9 @@ class Browser(Frame):
             buttonFrame = Frame(programFrame)
             buttonFrame.pack(side=BOTTOM,fill=X,expand=1)
 
-            addButton = Button(buttonFrame,text="Add as Flow")
-            plotButton = Button(buttonFrame,text="Add as Plot")
-            resultButton = Button(buttonFrame,text="Add as Result")
+            addButton = Button(buttonFrame,text=u"添加为流程")
+            plotButton = Button(buttonFrame,text=u"添加为绘图")
+            resultButton = Button(buttonFrame,text=u"添加为结果")
 
             addButton.bind('<Button-1>',
                 lambda event, arg=Flow.FLOW: self.createFlow(event,arg) )
@@ -96,12 +97,12 @@ class Browser(Frame):
         '''
         name = self.__getListItem()
         if not Util.checkNameType(name,ftype):
-            tkMessageBox.showwarning("Bad flow type:", "%s may only be a Plot or a Result." % name)
+            tkMessageBox.showwarning(u"流程类型错误：", u"%s 只能作为绘图（Plot）或结果（Result）。" % name)
         else:
             if self.canvas:
                 self.canvas.addFlow(self.programs[name],ftype)
             else:
-                raise Exception("No canvas to add Flows to")
+                raise Exception(u"当前没有可添加流程的画布")
 
     def __updateDocumentation(self,event):
         '''
@@ -157,8 +158,8 @@ class Browser(Frame):
 
         if not self.__changeListSelection(text):
             tkMessageBox.showwarning(
-            "Bad program name",
-            "No program in Madagascar with the name: %s" % text)
+            u"程序名称错误",
+            u"Madagascar 中不存在名为 %s 的程序" % text)
 
     def __searchDescriptions(self):
         '''
@@ -169,7 +170,7 @@ class Browser(Frame):
         '''
         window = Toplevel()
 
-        window.title("Search by functionality")
+        window.title(u"按功能搜索")
         window.resizable(False,False)
         
         frame = Frame(window) 
@@ -179,7 +180,7 @@ class Browser(Frame):
         entry.pack(side=LEFT,expand=1,fill=X)
 
 
-        button = Button(frame,text="Search")
+        button = Button(frame,text=u"搜索")
         button.pack(side=RIGHT)
 
         tframe = Frame(window)
@@ -193,7 +194,7 @@ class Browser(Frame):
         scrollbar['command'] = listbox.yview
         listbox.pack(expand=1,fill=Y,side=TOP)
 
-        button2 = Button(tframe,text="Select")
+        button2 = Button(tframe,text=u"选择")
         button2.pack(side=BOTTOM,expand=1,fill=X)
 
         def __getAndSearch(event):
@@ -233,7 +234,7 @@ def launch():
     tk = Tk()
     b = Browser(tk,programs,names,standAlone=True)
     b.pack(fill=BOTH,expand=1)
-    tk.title('Browse Madagascar programs')
+    tk.title(u'浏览 Madagascar 程序')
     tk.resizable(False,False)
     tk.mainloop()    
     

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Tkinter import *
 import tkMessageBox
 import Program
@@ -401,7 +402,7 @@ class Flow():
         window = Toplevel()
         window.grid()
         window.resizable(False,False)
-        window.title("Edit parameters:")
+        window.title(u"编辑参数：")
 
         # Create a frame to go in this Window
         allFrame = Frame(window)
@@ -445,7 +446,7 @@ class Flow():
                 try:
                     self.pars[pars[j]].set(value)
                 except Exception, e:
-                    tkMessageBox.showwarning("Bad parameter value:",e)
+                    tkMessageBox.showwarning(u"参数值错误：",e)
                     
             if preview:
                 wasSet = True
@@ -472,7 +473,7 @@ class Flow():
         tscroll = Scrollbar(allFrame,orient=VERTICAL)
         text = Text(allFrame,width=60,yscrollcommand=tscroll.set,wrap=WORD)
         tscroll['command'] = text.yview
-        text.insert(END,"Click Preview to see how this Flow would be in an SConstruct.")
+        text.insert(END,u"单击“预览”查看此流程在 SConstruct 中的形式。")
         text.grid(row=0,column=1,rowspan=len(pars),sticky=N+S)
         tscroll.grid(row=0,column=2,sticky=N+S,rowspan=len(pars))
         
@@ -480,17 +481,17 @@ class Flow():
             text.delete(1.0,END)
             text.insert(END,self.selfdoc)
 
-        b = Button(allFrame,text="Accept")
+        b = Button(allFrame,text=u"确定")
         b.bind('<Button-1>',__setParameters)
         b.grid(row=len(pars),column=0,sticky=E+W)
 
         bFrame = Frame(allFrame)
         bFrame.grid(row=len(pars),column=1)
-        b2 = Button(bFrame,text="Preview")
+        b2 = Button(bFrame,text=u"预览")
         b2.bind('<Button-1>',lambda event, preview=True, field=text: __setParameters(event,preview,field) )
         b2.grid(row=0, column=0)
         
-        b2 = Button(bFrame,text="View Documentation")
+        b2 = Button(bFrame,text=u"查看文档")
         b2.bind('<Button-1>', __viewSelfDoc)
         b2.grid(row=0, column=1)
         
@@ -591,7 +592,7 @@ class LinkedFlow():
         '''
 
         if self.ftype and flow.ftype != self.ftype: 
-            tkMessageBox.showwarning("Bad link type","You may not link together flows of different types (e.g. Flow with Result).  In this case you tried to link %s to %s!" % (self.ftype,flow.ftype))
+            tkMessageBox.showwarning(u"连接类型错误",u"不能连接不同类型的对象（例如 Flow 与 Result）。本次尝试连接的是 %s 与 %s！" % (self.ftype,flow.ftype))
         elif isinstance(flow,LinkedFlow): # add a LinkedFlow to this Flow
             for iflow in flow.flows:
                 iflow.unlink()

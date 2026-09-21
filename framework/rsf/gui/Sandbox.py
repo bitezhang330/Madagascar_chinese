@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Tkinter import *
 from Flow import Flow
 from Flow import LinkedFlow
@@ -170,10 +171,10 @@ class Sandbox(Canvas):
                     if flow != None and flow != iflow:
                         self.addLinkedFlow(flow,iflow)
                     else:
-                        raise Exception("Invalid flow selected to link to.")
+                        raise Exception(u"选择了无效的目标流程。")
             except Exception, e:
                 if flow:
-                    tkMessageBox.showwarning("Bad attempt at linking",e)
+                    tkMessageBox.showwarning(u"连接操作无效",e)
             finally:
                 self.unbind("<Button-1>")
                 self.__setMouseBindings()
@@ -210,7 +211,7 @@ class Sandbox(Canvas):
                 for flow in split:
                     self.items[flow.tag] = flow
             except Exception, e:
-                tkMessageBox.showwarning("Failed to unlink:",e)
+                tkMessageBox.showwarning(u"取消连接失败：",e)
 
         def __deleteFlow():
             '''
@@ -218,30 +219,30 @@ class Sandbox(Canvas):
             '''
             try:
                 if isinstance(flow,LinkedFlow):
-                    if tkMessageBox.askyesno("Delete Linked Flow?",
-                        "Delete all flows attached to this Linked Flow?  (To delete a single flow, unlink it first)"):
+                    if tkMessageBox.askyesno(u"删除关联流程？",
+                        u"是否删除与该关联流程连接的全部流程？（如只删除一个流程，请先取消连接）"):
                         flow.delete()
                         self.items.pop(flow.tag)
                 else:
-                    if tkMessageBox.askyesno("Delete Flow?", 
-                        "Are you sure you want to delete this %s?" % flow.ftype):
+                    if tkMessageBox.askyesno(u"删除流程？", 
+                        u"确定要删除该 %s 吗？" % flow.ftype):
                         
                         flow.delete()
                         self.items.pop(flow.tag)
                         self.flows.pop(flow.tag)
             except Exception, e:
-                tkMessageBox.showwarning("Failed to delete flow:", e)
+                tkMessageBox.showwarning(u"删除流程失败：", e)
 
         if flow: # we found an item
             # create a menu
             popup = Menu(self, tearoff=0)
-            popup.add_command(label="Edit Parameters",command=__openDialog) 
-            popup.add_command(label="Link",command=__linkFlow)
-            popup.add_command(label="Unlink",command=__unlinkFlow)
+            popup.add_command(label=u"编辑参数",command=__openDialog) 
+            popup.add_command(label=u"连接",command=__linkFlow)
+            popup.add_command(label=u"取消连接",command=__unlinkFlow)
             popup.add_separator()
-            popup.add_command(label="Delete",command=__deleteFlow)
+            popup.add_command(label=u"删除",command=__deleteFlow)
             popup.add_separator()
-            popup.add_command(label="Close this menu...")
+            popup.add_command(label=u"关闭此菜单...")
 
             # Snagged off the internet
             try:

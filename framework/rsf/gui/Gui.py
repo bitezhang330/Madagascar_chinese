@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Tkinter import *
 from Flow import Flow
 from Flow import LinkedFlow
@@ -22,7 +23,7 @@ class Gui(Tk):
 
     def __init__(self):
         Tk.__init__(self)
-        self.title('tkMadagascar')
+        self.title(u'tkMadagascar 中文版')
 
         # Are we showing the browser?
         # showBrowser is the state variable that tells us
@@ -74,7 +75,7 @@ class Gui(Tk):
         if not name:
             # Get a file name using a file chooser
             formats = [('SConstruct','SConstruct*')] # Restrict to SConstruct names
-            name = tkFileDialog.asksaveasfilename(title="Export to SConstruct",filetypes=formats)
+            name = tkFileDialog.asksaveasfilename(title=u"导出为 SConstruct",filetypes=formats)
 
         # If we found a filename.
         if len(name) > 0:
@@ -91,16 +92,16 @@ class Gui(Tk):
                         file.write(command+'\n')
                     else:
                         if isinstance(item,LinkedFlow):
-                            tkMessageBox.showwarning("LinkedFlow not configured",
-                            "LinkedFlow %d was not completely configured.  It will not be exported." % (item.id))
+                            tkMessageBox.showwarning(u"关联流程未配置",
+                            u"关联流程 %d 尚未完整配置，将不会被导出。" % (item.id))
                         else:
-                            tkMessageBox.showwarning("Flow not configured",
-                                "%s %d was not configured.  It will not be exported." % (item.ftype,item.id))
+                            tkMessageBox.showwarning(u"流程未配置",
+                                u"%s %d 尚未配置，将不会被导出。" % (item.ftype,item.id))
                         continue
                 file.write('End()')
                 file.close()
             except Exception, e:
-                tkMessageBox.showwarning("Exception while exporting",e)
+                tkMessageBox.showwarning(u"导出时发生异常",e)
 
     def save(self):
         '''
@@ -115,7 +116,7 @@ class Gui(Tk):
         '''
         formats = [('tkMadagascar object format','*.tkm')]
         # Get a name to save all objects to
-        name = tkFileDialog.asksaveasfilename(title="Save state to:",
+        name = tkFileDialog.asksaveasfilename(title=u"保存状态到：",
                                               filetypes=formats)
         # If we got a name
         if len(name) > 0:
@@ -130,10 +131,10 @@ class Gui(Tk):
                     pickle.dump(item,file) # Write each item out using pickle
                 file.close()
 
-                tkMessageBox.showinfo("Saved state:","Succesfully saved state information to: %s" % name)
+                tkMessageBox.showinfo(u"状态已保存：",u"状态信息已成功保存到：%s" % name)
 
             except Exception, e:
-                tkMessageBox.showwarning("Failed to save state",e)
+                tkMessageBox.showwarning(u"保存状态失败",e)
 
     def load(self):
         '''
@@ -146,7 +147,7 @@ class Gui(Tk):
         '''
         # Get a file name to load
         formats = [('tkMadagascar object format','*.tkm')]
-        name = tkFileDialog.askopenfilename(title="Load state from:",
+        name = tkFileDialog.askopenfilename(title=u"从以下位置加载状态：",
                                             filetypes=formats)
         if len(name) > 0:
             try:
@@ -168,9 +169,9 @@ class Gui(Tk):
 		                self.canvas.loadLinkedFlow(flow)
 		            else:
 		                self.canvas.loadFlow(flow)
-                tkMessageBox.showinfo("Load state:","Successfully restored state, you may proceed.")
+                tkMessageBox.showinfo(u"加载状态：",u"状态已成功恢复，可以继续操作。")
             except Exception,e :
-                tkMessageBox.showwarning("Failed to load state", e)
+                tkMessageBox.showwarning(u"加载状态失败", e)
                 self.canvas.reset()
 
     def getSConstruct(self):
@@ -201,12 +202,12 @@ class Gui(Tk):
             try:
                 os.remove(self.scons)
                 os.remove(self.logfile)
-                tkMessageBox.showinfo("Deleted temporary files:","Removed: %s and %s" % (self.scons,self.logfile))
+                tkMessageBox.showinfo(u"已删除临时文件：",u"已删除：%s 和 %s" % (self.scons,self.logfile))
                 self.scons = None
                 self.logfile   = None
                 self.logpos = 0L
             except Exception, e:
-                tkMessageBox.showwarning("Error deleting temporary files:",e)
+                tkMessageBox.showwarning(u"删除临时文件时出错：",e)
 
     def waitForProcess(self):
         '''
@@ -267,11 +268,11 @@ class Gui(Tk):
             self.showLog.set(1)
             self.viewmenu.entryconfigure(1,state=DISABLED)
             self.logWindow = Toplevel()
-            self.logWindow.title("Log")
+            self.logWindow.title(u"日志")
             scroll = Scrollbar(self.logWindow)
             self.log = Text(self.logWindow,yscrollcommand=scroll.set)
             menubar = Menu(self.logWindow,tearoff=0)
-            menubar.add_command(label="Kill process",command=self.killProcess)
+            menubar.add_command(label=u"终止进程",command=self.killProcess)
 
             self.logWindow.config(menu=menubar)
             scroll['command'] = self.log.yview
@@ -308,7 +309,7 @@ Will execute: %s
             logfile = open(self.logfile,'a')
             self.process = subprocess.Popen(command, shell=True,stdout=logfile,stderr=subprocess.STDOUT)
 
-            self.log.insert(END,"PROCESS ID: %d\n" % self.process.pid)
+            self.log.insert(END,u"进程 ID：%d\n" % self.process.pid)
             self.after(500,self.waitForProcess)
             logfile.close()
 
@@ -320,26 +321,26 @@ Will execute: %s
         menubar = Menu(self)
 
         self.filemenu = Menu(menubar,tearoff=0)
-        self.filemenu.add_command(label="New",command=self.canvas.reset)
+        self.filemenu.add_command(label=u"新建",command=self.canvas.reset)
         self.filemenu.add_separator()
-        self.filemenu.add_command(label="Load state",command=self.load)
-        self.filemenu.add_command(label="Save state",command=self.save)
+        self.filemenu.add_command(label=u"加载状态",command=self.load)
+        self.filemenu.add_command(label=u"保存状态",command=self.save)
         self.filemenu.add_separator()
-        self.filemenu.add_command(label="Export to SConstruct",
+        self.filemenu.add_command(label=u"导出为 SConstruct",
             command=self.exportFlows)
         self.filemenu.add_separator()
-        self.filemenu.add_command(label="Quit",command=self.destroy)
+        self.filemenu.add_command(label=u"退出",command=self.destroy)
 
-        menubar.add_cascade(label="File",menu=self.filemenu)
+        menubar.add_cascade(label=u"文件",menu=self.filemenu)
 
         self.viewmenu = Menu(menubar,tearoff=0)
-        self.viewmenu.add_checkbutton(label="Program browser",
+        self.viewmenu.add_checkbutton(label=u"程序浏览器",
                 variable=self.showBrowser,
                 command=self.__showProgramBrowser)
-        self.viewmenu.add_checkbutton(label="Log",
+        self.viewmenu.add_checkbutton(label=u"日志",
                 variable=self.showLog,
                 command=self.__showLogWindow)
-        menubar.add_cascade(label="View",menu=self.viewmenu)
+        menubar.add_cascade(label=u"视图",menu=self.viewmenu)
 
         self.runmenu = Menu(menubar,tearoff=0)
 
@@ -358,7 +359,7 @@ Will execute: %s
         self.runmenu.add_command(label="scons -n",
             command=lambda arg='scons -n': self.runCommand(arg))
 
-        menubar.add_cascade(label="Run...",menu=self.runmenu)
+        menubar.add_cascade(label=u"运行...",menu=self.runmenu)
         self.config(menu=menubar)
 
 
@@ -390,7 +391,7 @@ Will execute: %s
         if self.showBrowser.get() == 1:
             self.viewmenu.entryconfigure(0,state=DISABLED)
             top = Toplevel()
-            top.title('Program browser - tkMadagascar')
+            top.title(u'程序浏览器 - tkMadagascar')
             top.resizable(False,False)
             def closeBrowser():
                 self.showBrowser.set(0)
@@ -405,9 +406,9 @@ Will execute: %s
         if self.process:
             rc = self.process.poll()
             if rc == None:
-                tkMessageBox.showwarning("Process %d still active:" % self.process.pid, "tkMadagascar still has a child process active.  You may not quit until this process is either terminated or finishes.")
+                tkMessageBox.showwarning(u"进程 %d 仍在运行：" % self.process.pid, u"tkMadagascar 仍有子进程在运行。在该进程结束或被终止之前不能退出。")
         else:
-            if tkMessageBox.askyesno("Close tkMadagascar?", "Are you sure you want to quit?"):
+            if tkMessageBox.askyesno(u"关闭 tkMadagascar？", u"确定要退出吗？"):
                 self.deleteSConstruct()
                 Tk.destroy(self)
 
